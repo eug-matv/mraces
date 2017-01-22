@@ -38,6 +38,97 @@
         
     };                     
     
+/*  Roads.RoadTiles - задан массив тайлов и функции сравнения границ дорог */    
+    
+
+    Roads.RoadTiles = function (){
+        this.roadTiles = [
+// 0 - участок дороги без ограничений            
+            new Roads.OneRoadTile("00_no_border.png",
+                function(){
+                    return -Infinity;
+                },
+                function(){
+                    return Infinity;
+                },
+                function(){
+                    return -Infinity;
+                },
+                function(){
+                    return Infinity;
+                }
+            ),
+                
+ //1 - участок ограниченный слева и справа
+            new Roads.OneRoadTile("01_lr_vert.png",
+                function(y){
+                    return (20.0 / 128.0);
+                },
+                function(y){
+                    return (1.0 - 20.0/128.0);
+                },
+                function(){
+                    return -Infinity;
+                },
+                function(){
+                    return Infinity;
+                }
+            ),
+ 
+//2 - участок ограниченный сверху и снизу 
+            new Roads.OneRoadTile("02_tb_hor.png",
+                function(){
+                    return -Infinity;
+                },
+                function(){
+                    return Infinity;
+                },
+                function(x){
+                    return (20.0 / 128.0);
+                },
+                function(x){
+                    return (1.0 - 20.0/128.0);
+                }
+            ),
+
+//3 - участок ограниченный слева и справа - серху небольшое расхождение
+//пока его учитывать не будем - потом может быть учтем
+            new Roads.OneRoadTile("03_lr_u3.png",
+                function(y){
+                    return (20.0 / 128.0);
+                },
+                function(y){
+                    return (1.0 - 20.0/128.0);
+                },
+                function(){
+                    return -Infinity;
+                },
+                function(){
+                    return Infinity;
+                },
+            ),
+
+//4 - участок ограниченный слева и справа - серху небольшое расхождение
+            new Roads.OneRoadTile("03_lr_u3.png",
+                function(y){
+                    return (20.0 / 128.0);
+                },
+                function(y){
+                    return (1.0 - 20.0/128.0);
+                },
+                function(){
+                    return -Infinity;
+                },
+                function(){
+                    return Infinity;
+                },
+            ),
+
+
+            
+        ];
+        
+    };
     
     
     
