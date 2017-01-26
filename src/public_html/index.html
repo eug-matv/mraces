@@ -14,11 +14,25 @@ and open the template in the editor.
         <script src="js/jquery-3.1.1.js" type="text/javascript"></script>
         <script src="js/backbone.js" type="text/javascript"></script>
         <script src="js/pixi.js" type="text/javascript"></script>
+        <script src="js/rc-utils.js" type="text/javascript"></script>
         <script src="js/rc-landscape.js" type="text/javascript"></script>
+        
     </head>
     <body>
         <script>
-     
+           
+            $.getJSON( "js/tiles.json", function( data ) {
+                var items = [];
+                $.each( data, function( key, val ) {
+                    items.push( "<li id='" + key + "'>" + val + "</li>" );
+            });
+ 
+                $( "<ul/>", {
+                    "class": "my-new-list",
+                    html: items.join( "" )
+                }).appendTo( "body" );
+            });            
+            
             var renderer = PIXI.autoDetectRenderer(800, 600);
             //renderer = PIXI.
             document.body.appendChild(renderer.view);

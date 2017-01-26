@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>4.3.3</string>
         <key>fileName</key>
-        <string>/home/starik/test_work/roads.tps</string>
+        <string>/home/starik/git/mraces/utils/roads.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -262,6 +262,18 @@
             <key type="filename">tiles/Asphalt road/62_t_start.png</key>
             <key type="filename">tiles/Asphalt road/63_b_start.png</key>
             <key type="filename">tiles/Asphalt road/64_vert_start.png</key>
+            <key type="filename">tiles/Asphalt road/65_to_right_1.png</key>
+            <key type="filename">tiles/Asphalt road/66_to_left_1.png</key>
+            <key type="filename">tiles/Asphalt road/67_to_right_2.png</key>
+            <key type="filename">tiles/Asphalt road/68_to_left_2.png</key>
+            <key type="filename">tiles/Asphalt road/69_tune_d_r.png</key>
+            <key type="filename">tiles/Asphalt road/70_tune_d_l.png</key>
+            <key type="filename">tiles/Asphalt road/71_tune_u_r.png</key>
+            <key type="filename">tiles/Asphalt road/72_tune_u_l.png</key>
+            <key type="filename">tiles/Asphalt road/73_d_1_to_u_3.png</key>
+            <key type="filename">tiles/Asphalt road/74_l_1_to_r_3.png</key>
+            <key type="filename">tiles/Asphalt road/75_t_1_to_b_3.png</key>
+            <key type="filename">tiles/Asphalt road/76_r_1_to_l_3.png</key>
             <key type="filename">tiles/Dirt/land_dirt01.png</key>
             <key type="filename">tiles/Dirt/land_dirt02.png</key>
             <key type="filename">tiles/Dirt/land_dirt03.png</key>
@@ -276,20 +288,6 @@
             <key type="filename">tiles/Dirt/land_dirt12.png</key>
             <key type="filename">tiles/Dirt/land_dirt13.png</key>
             <key type="filename">tiles/Dirt/land_dirt14.png</key>
-            <key type="filename">tiles/Grass/land_grass01.png</key>
-            <key type="filename">tiles/Grass/land_grass02.png</key>
-            <key type="filename">tiles/Grass/land_grass03.png</key>
-            <key type="filename">tiles/Grass/land_grass04.png</key>
-            <key type="filename">tiles/Grass/land_grass05.png</key>
-            <key type="filename">tiles/Grass/land_grass06.png</key>
-            <key type="filename">tiles/Grass/land_grass07.png</key>
-            <key type="filename">tiles/Grass/land_grass08.png</key>
-            <key type="filename">tiles/Grass/land_grass09.png</key>
-            <key type="filename">tiles/Grass/land_grass10.png</key>
-            <key type="filename">tiles/Grass/land_grass11.png</key>
-            <key type="filename">tiles/Grass/land_grass12.png</key>
-            <key type="filename">tiles/Grass/land_grass13.png</key>
-            <key type="filename">tiles/Grass/land_grass14.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -456,8 +454,6 @@
         </map>
         <key>fileList</key>
         <array>
-            <filename>tiles/Asphalt road/63_b_start.png</filename>
-            <filename>tiles/Asphalt road/64_vert_start.png</filename>
             <filename>tiles/Asphalt road/00_no_border.png</filename>
             <filename>tiles/Asphalt road/01_lr_vert.png</filename>
             <filename>tiles/Asphalt road/02_tb_hor.png</filename>
@@ -521,34 +517,20 @@
             <filename>tiles/Asphalt road/60_r_start.png</filename>
             <filename>tiles/Asphalt road/61_hor_start.png</filename>
             <filename>tiles/Asphalt road/62_t_start.png</filename>
-            <filename>tiles/Dirt/land_dirt01.png</filename>
-            <filename>tiles/Dirt/land_dirt02.png</filename>
-            <filename>tiles/Dirt/land_dirt03.png</filename>
-            <filename>tiles/Dirt/land_dirt04.png</filename>
-            <filename>tiles/Dirt/land_dirt05.png</filename>
-            <filename>tiles/Dirt/land_dirt06.png</filename>
-            <filename>tiles/Dirt/land_dirt07.png</filename>
-            <filename>tiles/Dirt/land_dirt08.png</filename>
-            <filename>tiles/Dirt/land_dirt09.png</filename>
-            <filename>tiles/Dirt/land_dirt10.png</filename>
-            <filename>tiles/Dirt/land_dirt11.png</filename>
-            <filename>tiles/Dirt/land_dirt12.png</filename>
-            <filename>tiles/Dirt/land_dirt13.png</filename>
-            <filename>tiles/Dirt/land_dirt14.png</filename>
-            <filename>tiles/Grass/land_grass01.png</filename>
-            <filename>tiles/Grass/land_grass02.png</filename>
-            <filename>tiles/Grass/land_grass03.png</filename>
-            <filename>tiles/Grass/land_grass04.png</filename>
-            <filename>tiles/Grass/land_grass05.png</filename>
-            <filename>tiles/Grass/land_grass06.png</filename>
-            <filename>tiles/Grass/land_grass07.png</filename>
-            <filename>tiles/Grass/land_grass08.png</filename>
-            <filename>tiles/Grass/land_grass09.png</filename>
-            <filename>tiles/Grass/land_grass10.png</filename>
-            <filename>tiles/Grass/land_grass11.png</filename>
-            <filename>tiles/Grass/land_grass12.png</filename>
-            <filename>tiles/Grass/land_grass13.png</filename>
-            <filename>tiles/Grass/land_grass14.png</filename>
+            <filename>tiles/Asphalt road/63_b_start.png</filename>
+            <filename>tiles/Asphalt road/64_vert_start.png</filename>
+            <filename>tiles/Asphalt road/65_to_right_1.png</filename>
+            <filename>tiles/Asphalt road/66_to_left_1.png</filename>
+            <filename>tiles/Asphalt road/67_to_right_2.png</filename>
+            <filename>tiles/Asphalt road/68_to_left_2.png</filename>
+            <filename>tiles/Asphalt road/69_tune_d_r.png</filename>
+            <filename>tiles/Asphalt road/70_tune_d_l.png</filename>
+            <filename>tiles/Asphalt road/71_tune_u_r.png</filename>
+            <filename>tiles/Asphalt road/72_tune_u_l.png</filename>
+            <filename>tiles/Asphalt road/73_d_1_to_u_3.png</filename>
+            <filename>tiles/Asphalt road/74_l_1_to_r_3.png</filename>
+            <filename>tiles/Asphalt road/75_t_1_to_b_3.png</filename>
+            <filename>tiles/Asphalt road/76_r_1_to_l_3.png</filename>
             <filename>tiles/Cars/car_black_1.png</filename>
             <filename>tiles/Cars/car_black_2.png</filename>
             <filename>tiles/Cars/car_black_3.png</filename>
@@ -599,6 +581,20 @@
             <filename>tiles/Cars/car_yellow_small_3.png</filename>
             <filename>tiles/Cars/car_yellow_small_4.png</filename>
             <filename>tiles/Cars/car_yellow_small_5.png</filename>
+            <filename>tiles/Dirt/land_dirt01.png</filename>
+            <filename>tiles/Dirt/land_dirt02.png</filename>
+            <filename>tiles/Dirt/land_dirt03.png</filename>
+            <filename>tiles/Dirt/land_dirt04.png</filename>
+            <filename>tiles/Dirt/land_dirt05.png</filename>
+            <filename>tiles/Dirt/land_dirt06.png</filename>
+            <filename>tiles/Dirt/land_dirt07.png</filename>
+            <filename>tiles/Dirt/land_dirt08.png</filename>
+            <filename>tiles/Dirt/land_dirt09.png</filename>
+            <filename>tiles/Dirt/land_dirt10.png</filename>
+            <filename>tiles/Dirt/land_dirt11.png</filename>
+            <filename>tiles/Dirt/land_dirt12.png</filename>
+            <filename>tiles/Dirt/land_dirt13.png</filename>
+            <filename>tiles/Dirt/land_dirt14.png</filename>
             <filename>tiles/Motorcycles/motorcycle_black.png</filename>
             <filename>tiles/Motorcycles/motorcycle_blue.png</filename>
             <filename>tiles/Motorcycles/motorcycle_green.png</filename>
