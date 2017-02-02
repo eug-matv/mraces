@@ -288,6 +288,20 @@
             <key type="filename">tiles/Dirt/land_dirt12.png</key>
             <key type="filename">tiles/Dirt/land_dirt13.png</key>
             <key type="filename">tiles/Dirt/land_dirt14.png</key>
+            <key type="filename">tiles/Grass/land_grass01.png</key>
+            <key type="filename">tiles/Grass/land_grass02.png</key>
+            <key type="filename">tiles/Grass/land_grass03.png</key>
+            <key type="filename">tiles/Grass/land_grass04.png</key>
+            <key type="filename">tiles/Grass/land_grass05.png</key>
+            <key type="filename">tiles/Grass/land_grass06.png</key>
+            <key type="filename">tiles/Grass/land_grass07.png</key>
+            <key type="filename">tiles/Grass/land_grass08.png</key>
+            <key type="filename">tiles/Grass/land_grass09.png</key>
+            <key type="filename">tiles/Grass/land_grass10.png</key>
+            <key type="filename">tiles/Grass/land_grass11.png</key>
+            <key type="filename">tiles/Grass/land_grass12.png</key>
+            <key type="filename">tiles/Grass/land_grass13.png</key>
+            <key type="filename">tiles/Grass/land_grass14.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -600,6 +614,20 @@
             <filename>tiles/Motorcycles/motorcycle_green.png</filename>
             <filename>tiles/Motorcycles/motorcycle_red.png</filename>
             <filename>tiles/Motorcycles/motorcycle_yellow.png</filename>
+            <filename>tiles/Grass/land_grass01.png</filename>
+            <filename>tiles/Grass/land_grass02.png</filename>
+            <filename>tiles/Grass/land_grass03.png</filename>
+            <filename>tiles/Grass/land_grass04.png</filename>
+            <filename>tiles/Grass/land_grass05.png</filename>
+            <filename>tiles/Grass/land_grass06.png</filename>
+            <filename>tiles/Grass/land_grass07.png</filename>
+            <filename>tiles/Grass/land_grass08.png</filename>
+            <filename>tiles/Grass/land_grass09.png</filename>
+            <filename>tiles/Grass/land_grass10.png</filename>
+            <filename>tiles/Grass/land_grass11.png</filename>
+            <filename>tiles/Grass/land_grass12.png</filename>
+            <filename>tiles/Grass/land_grass13.png</filename>
+            <filename>tiles/Grass/land_grass14.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

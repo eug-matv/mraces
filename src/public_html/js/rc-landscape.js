@@ -224,7 +224,7 @@
                              y2: -1};
         
         
-//Размеры спрайта
+        
 
         
 //Создадим двумерный массив матрицу для все области. Пока будет для всей 
@@ -445,7 +445,8 @@ this.tilesLinks.sprites[this.tilesIndexes[0][j-1].indx].
             var spriteName = 
                 this.tilesLinks.sprites[this.tilesIndexes[x1][y1].indx].name;
             this.tilesIndexes[x1][y1].sprite = 
-                        window.PIXI.Sprite.fromFrame (spriteName);
+                      new  window.PIXI.Sprite.fromFrame (spriteName);
+            
             container.addChild(this.tilesIndexes[x1][y1].sprite);    
         }            
 
@@ -465,15 +466,27 @@ this.tilesLinks.sprites[this.tilesIndexes[0][j-1].indx].
                 var spriteName = 
         this.tilesLinks.sprites[this.tilesIndexes[i][y1].indx].name;
                 this.tilesIndexes[i][y1].sprite = 
-                        window.PIXI.Sprite.fromFrame (spriteName);
+                       new window.PIXI.Sprite.fromFrame (spriteName);
+                
                 container.addChild(this.tilesIndexes[i][y1].sprite);    
-            }            
+            }   
+            
             this.tilesIndexes[i][y1].sprite.x = 
                Math.round(this.tilesIndexes[i-1][y1].sprite.x+spriteWidth*cos_rt);
                         
             this.tilesIndexes[i][y1].sprite.y = 
                Math.round(this.tilesIndexes[i-1][y1].sprite.y+spriteWidth*sin_rt); 
-            
+   
+            this.tilesIndexes[i][y1].sprite.scale.x=1.00+3.0/128.0;
+            this.tilesIndexes[i][y1].sprite.scale.y=1.00+3.0/128.0;
+   
+ /*   
+            this.tilesIndexes[i][y1].sprite.x = 
+               this.tilesIndexes[i-1][y1].sprite.x+spriteWidth*cos_rt;
+                        
+            this.tilesIndexes[i][y1].sprite.y = 
+               this.tilesIndexes[i-1][y1].sprite.y+spriteWidth*sin_rt; 
+*/            
             this.tilesIndexes[i][y1].sprite.rotation = rt;
         }    
         
@@ -483,7 +496,7 @@ this.tilesLinks.sprites[this.tilesIndexes[0][j-1].indx].
                 var spriteName = 
         this.tilesLinks.sprites[this.tilesIndexes[x1][j].indx].name;
                 this.tilesIndexes[x1][j].sprite = 
-                        window.PIXI.Sprite.fromFrame (spriteName);
+                      new  window.PIXI.Sprite.fromFrame (spriteName);
                 container.addChild(this.tilesIndexes[x1][j].sprite);    
             }    
 
@@ -494,7 +507,11 @@ this.tilesLinks.sprites[this.tilesIndexes[0][j-1].indx].
             this.tilesIndexes[x1][j].sprite.y = 
            Math.round(this.tilesIndexes[x1][j-1].sprite.y+spriteWidth*cos_rt); 
             
+            this.tilesIndexes[x1][j].sprite.scale.x=1.00+3.0/128.0;
+            this.tilesIndexes[x1][j].sprite.scale.y=1.00+3.0/128.0;
             this.tilesIndexes[x1][j].sprite.rotation = rt;
+            
+            
         }
         
         
@@ -505,7 +522,7 @@ this.tilesLinks.sprites[this.tilesIndexes[0][j-1].indx].
                     var spriteName = 
         this.tilesLinks.sprites[this.tilesIndexes[i][j].indx].name;
                     this.tilesIndexes[i][j].sprite = 
-                        window.PIXI.Sprite.fromFrame (spriteName);
+                      new  window.PIXI.Sprite.fromFrame (spriteName);
                     container.addChild(this.tilesIndexes[i][j].sprite);    
                 }    
                 
@@ -516,7 +533,9 @@ this.tilesLinks.sprites[this.tilesIndexes[0][j-1].indx].
                 this.tilesIndexes[i][j].sprite.y = 
                 Math.round(this.tilesIndexes[i-1][j].sprite.y+(spriteWidth)*sin_rt); 
             
-                 this.tilesIndexes[i][j].sprite.rotation = rt;
+                this.tilesIndexes[i][j].sprite.scale.x=1.00+3.0/128.0;
+                this.tilesIndexes[i][j].sprite.scale.y=1.00+3.0/128.0;
+                this.tilesIndexes[i][j].sprite.rotation = rt;
             
             }
         }    

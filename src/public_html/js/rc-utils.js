@@ -66,15 +66,16 @@
 
 
 
-/*Функция temp_lineSegmentsAndArc - решение уравнения пересения
- * прямой ls и дуги окружности crc
+/*Функция resolveLineSegmentsCoefAndCircle - решение уравнения пересения
+ * прямой ls и  окружности crc
  * ls - задается как коэффициенты a, b, c, где a*x+b*y=c
  *  crc задется параметрами xc,yc, r, где xc, yc - центр окружности, r - радиус.
  *  Возвращаемое значение массив: 
- *  [[x1,y1],[x2, y2]] - со значениями точек пересечений, или null - если пересечений нет
+ *  [[x1,y1],[x2, y2]] - со значениями точек пересечений, или null, 
+ *  если пересечений с окружностью нет
  * */
 
-    window.RCUtils.resolveLineSegmentsAndCircle = function(ls, crc){
+    RCUtils.resolveLineSegmentsCoefAndCircle = function(ls, crc){
         
         var rez = [];
         if(Math.abs(ls.a)<=0.000001)
@@ -130,6 +131,11 @@
         rez.push([xr, yr]);    
         return rez;
     };
+
+
+
+
+
 
 /*Промежуточная процедура опрделяет, пересекается ли отрезок с заданным 
  * квардратом размером 1x1 или внутри лежит, или не пересекается.
@@ -395,24 +401,3 @@ var temp_lineSegmentAndQuadrilateral = function (ql,
 
 }());
 
-
-var crcTest = {xc: 10,
-            yc: 20,
-            r: 2};
-
-
-var lsTest = RCUtils.getCoefOfLineSegment(9, 20, 30, 30);
-
-console.log(lsTest);
-
-
-var rezTest = RCUtils.resolveLineSegmentsAndCircle(lsTest, crcTest);
-
-console.log(rezTest);
-
-
-var testRezTest = (rezTest[0][0] - crcTest.xc)*(rezTest[0][0] - crcTest.xc)+
-                  (rezTest[0][1] - crcTest.yc)*(rezTest[0][1] - crcTest.yc);
-
-testRezTest = Math.sqrt(testRezTest);
-console.log(testRezTest);
