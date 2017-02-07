@@ -276,8 +276,10 @@
  *    
  *       
  *   Возращаеся:
- *  - массив [xr, yr, newI, newJ] - xr, yr координаты пересечения отрезка с
- *  квадратом, причем с небольшим смещением в сторону соседнего квардата. 
+ *  - массив [xr, yr, newI, newJ, xi, yi] - xr, yr координаты пересечения отрезка с
+ *  квадратом, причем с небольшим смещением в сторону соседнего квардата?
+ *  newI, newJ - координаты следующего тайла, xi, yi - координаты пересечения
+ *  но немного внутри текущего тайла.
  *   - null --- если нет соответствия условиям функции.
  *   
  * */
@@ -307,7 +309,8 @@ RCUtils.resolveLineSegmentAnd1x1Square = function(tileNum, ls){
             if(Math.abs(rez[0] - tileNum[0]) < 0.000001 &&
                Math.abs(rez[1] - tileNum[1]) < 0.000001 ){
                 return [tileNum[0]-0.000001, tileNum[1]-0.000001, 
-                         tileNum[0]-1, tileNum[1]-1];
+                         tileNum[0]-1, tileNum[1]-1,
+                         tileNum[0]+0.000001, tileNum[1]+0.000001];
             }
 
 //Точка пересечения  левой и нижней сторон. Очень маловероятно, но исключать
@@ -315,10 +318,12 @@ RCUtils.resolveLineSegmentAnd1x1Square = function(tileNum, ls){
             if(Math.abs(rez[0] - tileNum[0]) < 0.000001 &&
                Math.abs(rez[1] - tileNum[1]-1.0) < 0.000001 ){
                 return [tileNum[0]-0.000001, tileNum[1]+1.000001, 
-                        tileNum[0]-1, tileNum[1]+1];
+                        tileNum[0]-1, tileNum[1]+1,
+            tileNum[0]+0.000001, tileNum[1]+0.999999];
             }
             
-            return [tileNum[0]-0.000001, rez[1], tileNum[0]-1, tileNum[1]];
+            return [tileNum[0]-0.000001, rez[1], tileNum[0]-1, tileNum[1],
+                    tileNum[0]+0.000001, rez[1]];
         }
         
         
@@ -333,16 +338,19 @@ RCUtils.resolveLineSegmentAnd1x1Square = function(tileNum, ls){
             if(Math.abs(rez[0] - tileNum[0]) < 0.000001 &&
                Math.abs(rez[1] - tileNum[1]) < 0.000001 ){
                 return [tileNum[0]-0.000001, tileNum[0]-0.000001, 
-                         tileNum[0]-1, tileNum[1]-1];
+                         tileNum[0]-1, tileNum[1]-1,
+                     tileNum[0]+0.000001, tileNum[0]+0.000001];
             }
 //Проверим на предмет близкого пересечения правой и верхних сторон                                
             if(Math.abs(rez[0] - tileNum[0]-1.0) < 0.000001 &&
                Math.abs(rez[1] - tileNum[1]) < 0.000001 ){
                 return [tileNum[0] + 1.000001, tileNum[1] - 0.000001, 
-                         tileNum[0]+1, tileNum[1]-1];
+                         tileNum[0]+1, tileNum[1]-1,
+                     tileNum[0] + 0.999999, tileNum[1] + 0.000001];
             }
             
-            return [rez[0], tileNum[1]-0.000001, tileNum[0], tileNum[1]-1];
+            return [rez[0], tileNum[1]-0.000001, tileNum[0], tileNum[1]-1,
+                    rez[0], tileNum[1]+0.000001];
         }
 
 //Проверим правую сторону квадрата
@@ -355,17 +363,20 @@ RCUtils.resolveLineSegmentAnd1x1Square = function(tileNum, ls){
             if(Math.abs(rez[0] - tileNum[0]-1.0) < 0.000001 &&
                Math.abs(rez[1] - tileNum[1]) < 0.000001 ){
                 return [tileNum[0]+1.000001, tileNum[1]-0.000001, 
-                         tileNum[0]+1, tileNum[1]-1];
+                         tileNum[0]+1, tileNum[1]-1,
+                     tileNum[0]+0.999999, tileNum[1]+0.000001];
             }
 //Точка пересечения правой и нижней  сторон. Очень маловероятно, но исключать
 //нелься, что отрезок пройдет строго по диагнонали
             if(Math.abs(rez[0] - tileNum[0]-1.0) < 0.000001 &&
                Math.abs(rez[1] - tileNum[1]-1.0) < 0.000001 ){
                 return [tileNum[0]+1.000001,tileNum[1]+1.000001, 
-                        tileNum[0]+1 , tileNum[1]+1];
+                        tileNum[0]+1 , tileNum[1]+1,
+                        tileNum[0]+0.999999,tileNum[1]+0.999999];
             }
             
-            return [tileNum[0]+1.000001, rez[1], tileNum[0]+1, tileNum[1]];
+            return [tileNum[0]+1.000001, rez[1], tileNum[0]+1, tileNum[1],
+                    tileNum[0]+0.999999, rez[1]];
         }
 
 //Проверим нижнюю сторону квадрата
@@ -378,7 +389,8 @@ RCUtils.resolveLineSegmentAnd1x1Square = function(tileNum, ls){
             if(Math.abs(rez[0] - tileNum[0]) < 0.000001 &&
                Math.abs(rez[1] - tileNum[1]-1.0) < 0.000001 ){
                 return [tileNum[0]-0.000001, tileNum[1]+1.000001, 
-                         tileNum[0]-1, tileNum[1]+1];
+                         tileNum[0]-1, tileNum[1]+1,
+                        tileNum[0]+0.000001, tileNum[1]+0.999999];
             }
             
 //Точка пересечения правой и нижней  сторон. Очень маловероятно, но исключать
@@ -386,13 +398,15 @@ RCUtils.resolveLineSegmentAnd1x1Square = function(tileNum, ls){
             if(Math.abs(rez[0] - tileNum[0]-1.0) < 0.000001 &&
                Math.abs(rez[1] - tileNum[1]-1.0) < 0.000001 ){
                 return [tileNum[0]+1.000001,tileNum[1]+1.000001, 
-                        tileNum[0]+1, tileNum[1]+1];
+                        tileNum[0]+1, tileNum[1]+1,
+                        tileNum[0]+0.999999, tileNum[1]+0.999999
+                    ];
             }
             
-            return [rez[0], tileNum[1]+1.000001, tileNum[0], tileNum[1] + 1];
+            return [rez[0], tileNum[1]+1.000001, tileNum[0], tileNum[1] + 1,
+                    rez[0], tileNum[1]+0.999999];
         }
-    
-
+        return null;
     };
 
     
