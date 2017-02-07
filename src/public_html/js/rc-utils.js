@@ -6,7 +6,7 @@
 "use strict";
 (function() {
     window.RCUtils = {};
-    var temp_twoLineSegments = function(ls1, ls2){
+    RCUtils.twoLineSegments = function(ls1, ls2){
         
         var a11 = ls1[1] - ls1[3];
         var a12 = ls1[2] - ls1[0];
@@ -55,18 +55,60 @@
         
     };
 
-    window.RCUtils.getCoefOfLineSegment = function(x1, y1, x2, y2){
-    var rez = {
+    RCUtils.getCoefOfLineSegment = function(x1, y1, x2, y2){
+        var rez = {
             a: y1 - y2,
             b: x2 - x1,
             c: x2*y1 - y2*x1
+        };
+        return rez;
     };
-    return rez;
-};
+
+/*RCUtils.testForPointInLineSegment 
+ * Проверка попадания пикселя в отрезок
+ * Входные параметры: 
+ *   pnt - рассматриваемая точка в виде массива [x,y]
+ *   ls - отрезок в виде массива [x1,y1,x2,y2] - где x1,y1 --- первая точка,
+ * x2,y2 ---- вторая точка отрезка.
+ * Возврашаемое значение:
+ *  true, если точка лежит внутри отрезка,
+ *  false, если точка не лежит на отрезки, или лежит на прямой отрезка,
+ * но за пределам.
+ * */
+    
+    RCUtils.testForPointInLineSegment = function(pnt, ls){
+        if(Math.abs(ls[2] - ls[0]) > Math.abs(ls[3] - ls[1])){
+            if(ls[2] > ls[0]){
+                if(pnt[0] < ls[0] || pnt[0] > ls[2]){
+                    return false;
+                }
+            }else{
+                if(pnt[0] < ls[2] || pnt[0] > ls[0]){
+                    return false;
+                }               
+            }
+            var tmp = (pnt[0]-ls[0]) * (ls[3]-ls[1]) / (ls[2]-ls[0]) + ls[1];
+            if(Math.abs(tmp-pnt[1]) < 0.00001)return true;
+            
+        }else{
+            if(ls[3] > ls[1]){
+                if(pnt[1] < ls[1] || pnt[1] > ls[3]){
+                    return false;
+                }
+            }else{
+                if(pnt[1] < ls[3] || pnt[1] > ls[1]){
+                    return false;
+                }               
+            }
+            var tmp = (pnt[1]-ls[1]) * (ls[2]-ls[0]) / (ls[3]-ls[1]) + ls[0];
+            if(Math.abs(tmp-pnt[0]) < 0.00001)return true;
+        }
+        return false;
+        
+    };
 
 
-
-/*Функция resolveLineSegmentsCoefAndCircle - решение уравнения пересения
+/*Функция resolveLineCoefAndCircle - решение уравнения пересения
  * прямой ls и  окружности crc
  * ls - задается как коэффициенты a, b, c, где a*x+b*y=c
  *  crc задется параметрами xc,yc, r, где xc, yc - центр окружности, r - радиус.
@@ -75,7 +117,7 @@
  *  если пересечений с окружностью нет
  * */
 
-    RCUtils.resolveLineSegmentsCoefAndCircle = function(ls, crc){
+    RCUtils.resolveLineCoefAndCircle = function(ls, crc){
         
         var rez = [];
         if(Math.abs(ls.a)<=0.000001)
@@ -132,11 +174,235 @@
         return rez;
     };
 
+/*Функция resolveLineSegmentAndArc - поиск точки пересечения сегмента окружности
+ * и отрезка.
+ * Входные параметры: 
+ *    tileNum - массив из двух индексов [i, j], где определяется интересующий нас
+ * плитка (спрайт). Нас интересует пространство в квдрате [i, j] - [i+1,j+1];
+ *    arc - массив [x, y, r] - где x,y --- центр окружности, r - радиус в мере
+ * одного тайла ландшафта или дороги.
+ *    ls --- массив [x1,y1,x2,y2] - где (x1,y1) - координаты первой точки,
+ * (x2,y2) --- координаты второй точки.
+ *   
+ *   Возращаеся:
+ *   - массив [xrez, yrez] - где точка (xrez, yrez) принадлежит отрезку ls и
+ * точка лежит в квадрате [i, j] - [i+1, j+1];
+ *   - null --- если такая точка не может быть найдена
+ *   
+ * */
 
+    RCUtils.resolveLineSegmentAndArc = function(tileNum, arc, ls){
+//Приведем ls к форме уравнений и коэффициентов
+        var lineCoef = RCUtils.getCoefOfLineSegment(ls[0],ls[1],ls[2],ls[3]);
+        var crc = {xc: arc[0], yc: arc[1], r: arc[2]};
+        
+//Найдем пересечение прямой и окружности.
+        var rez = RCUtils.resolveLineCoefAndCircle(lineCoef, crc);
+        
+ //Проверим результаты: возможно, нулевое значение, что значит пересечения 
+ //не было
+        if(!rez){
+            return null;
+        }
+        
+//Проверка попадания точки в tileNum.
+        if(rez[0][0] >= tileNum[0] && rez[0][0] <= tileNum[0]+1.0 &&
+           rez[0][1] >= tileNum[1] && rez[0][1] <= tileNum[1]+1.0){
 
+//Проверка попадания точки в отрезок ls
+            if(RCUtils.testForPointInLineSegment(rez[0], ls)){
+                return [rez[0][0], rez[0][1]];
+            }
+        }
+        
+        if(rez.length > 1){
+//Проверим вторую точку
+            if(rez[1][0] >= tileNum[0] && rez[1][0] <= tileNum[0]+1.0 &&
+               rez[1][1] >= tileNum[1] && rez[1][1] <= tileNum[1]+1.0){
 
+//Проверка попадания точки в отрезок ls
+                if(RCUtils.testForPointInLineSegment(rez[1], ls)){
+                    return [rez[1][0], rez[1][1]];
+                }
+            }
+        }
+        return null;
+    };
+    
+    
+/*Функция resolveLineSegmentAndLineSegment - поиск точки пересечения отрезка
+ * и второго отрезка.
+ * Входные параметры: 
+ *    tileNum - массив из двух индексов [i, j], где определяется интересующий нас
+ * плитка (спрайт). Нас интересует пространство в квдрате [i, j] - [i+1,j+1];
+ *    
+ *    ls1 --- массив [x1,y1,x2,y2] - где (x1,y1) - координаты первой точки,
+ * (x2,y2) --- координаты второй точки для первого отрезка.
+ *    
+ *    ls2 --- массив [x1,y1,x2,y2] - где (x1,y1) - координаты первой точки,
+ * (x2,y2) --- координаты второй точки для первого отрезка.
+ *       
+ *   Возращаеся:
+ *   - массив [xrez, yrez] - где точка (xrez, yrez) принадлежит отрезкам 
+ *   ls1 и ls2 и лежит в квадрате [i, j] - [i+1, j+1];
+ *   - null --- если такая точка не может быть найдена
+ *   
+ * */
 
+    RCUtils.resolveLineSegmentAndLineSegment = function(tileNum, ls1, ls2){
+        var rez = RCUtils.twoLineSegments(ls1, ls2);
+        if(!rez){
+            return null;
+        }
+        
+        if(rez[0] >= tileNum[0] && rez[0] <= tileNum[0]+1.0 &&
+           rez[1] >= tileNum[1] && rez[1] <= tileNum[1]+1.0){
+            return rez;
+        }
+        return null;
+    };
 
+  
+/*Функция resolveLineSegmentAnd1x1Square - поиск точки пересечения отрезка
+ * и квадрата с координатами. i, j, i+1, j+1
+ * Входные параметры: 
+ *    tileNum - массив из двух индексов [i, j], где определяется интересующий нас
+ * плитка (спрайт). Нас интересует пространство в квадрате 
+ * [i, j] -  [i+1,j+1];
+ *    
+ *    ls1 --- массив [x1,y1,x2,y2] - где (x1,y1) - координаты первой точки, 
+ *    которая должна располагаться внутри квадрата
+ * (x2,y2) --- координаты второй точки  отрезка. 
+ *    
+ *       
+ *   Возращаеся:
+ *  - массив [xr, yr, newI, newJ] - xr, yr координаты пересечения отрезка с
+ *  квадратом, причем с небольшим смещением в сторону соседнего квардата. 
+ *   - null --- если нет соответствия условиям функции.
+ *   
+ * */
+RCUtils.resolveLineSegmentAnd1x1Square = function(tileNum, ls){
+        
+        var rez;
+//Первая точка отрезка должна быть внутри тайла        
+        if(ls[0] < tileNum[0] || ls[0] >= tileNum[0]+1.0 ||
+           ls[1] < tileNum[1] || ls[1] >= tileNum[1]+1.0){
+            return null;
+        }
+
+//вторая точка отрезка должна быть вне тайла            
+        if(ls[2] >= tileNum[0] && ls[2] < tileNum[0]+1.0 &&
+           ls[3] >= tileNum[1] && ls[3] < tileNum[1]+1.0){
+            return null;
+        }
+    
+//Проверяем каждую сторону квадрата
+//Проверим левую сторону квадрата
+        rez = RCUtils.twoLineSegments(ls, 
+            [tileNum[0], tileNum[1], tileNum[0], tileNum[1]+1.0]);
+            
+        if(!!rez){
+//Точка пересечения  левой и верхних сторон. Очень маловероятно, но исключать
+//нелься, что отрезок пройдет строго через точку пересечения
+            if(Math.abs(rez[0] - tileNum[0]) < 0.000001 &&
+               Math.abs(rez[1] - tileNum[1]) < 0.000001 ){
+                return [tileNum[0]-0.000001, tileNum[1]-0.000001, 
+                         tileNum[0]-1, tileNum[1]-1];
+            }
+
+//Точка пересечения  левой и нижней сторон. Очень маловероятно, но исключать
+//нелься, что отрезок пройдет строго через точку пересечения        
+            if(Math.abs(rez[0] - tileNum[0]) < 0.000001 &&
+               Math.abs(rez[1] - tileNum[1]-1.0) < 0.000001 ){
+                return [tileNum[0]-0.000001, tileNum[1]+1.000001, 
+                        tileNum[0]-1, tileNum[1]+1];
+            }
+            
+            return [tileNum[0]-0.000001, rez[1], tileNum[0]-1, tileNum[1]];
+        }
+        
+        
+//Проверим верхнюю сторону квадрата
+        rez = RCUtils.twoLineSegments(ls, 
+            [tileNum[0], tileNum[1], tileNum[0]+1.0, tileNum[1]]);
+            
+        if(!!rez){
+//Проверим, а вдруг прощло возле вершины верхней и левой стороно. 
+//Очень маловероятно, но исключать
+//нелься, что отрезок пройдет строго по диагнонали
+            if(Math.abs(rez[0] - tileNum[0]) < 0.000001 &&
+               Math.abs(rez[1] - tileNum[1]) < 0.000001 ){
+                return [tileNum[0]-0.000001, tileNum[0]-0.000001, 
+                         tileNum[0]-1, tileNum[1]-1];
+            }
+//Проверим на предмет близкого пересечения правой и верхних сторон                                
+            if(Math.abs(rez[0] - tileNum[0]-1.0) < 0.000001 &&
+               Math.abs(rez[1] - tileNum[1]) < 0.000001 ){
+                return [tileNum[0] + 1.000001, tileNum[1] - 0.000001, 
+                         tileNum[0]+1, tileNum[1]-1];
+            }
+            
+            return [rez[0], tileNum[1]-0.000001, tileNum[0], tileNum[1]-1];
+        }
+
+//Проверим правую сторону квадрата
+        rez = RCUtils.twoLineSegments(ls, 
+            [tileNum[0]+1.0, tileNum[1], tileNum[0]+1.0, tileNum[1]+1.0]);
+
+        if(!!rez){
+//Точка пересечения правой и верхней  сторон. Очень маловероятно, но исключать
+//нелься, что отрезок пройдет строго по диагнонали
+            if(Math.abs(rez[0] - tileNum[0]-1.0) < 0.000001 &&
+               Math.abs(rez[1] - tileNum[1]) < 0.000001 ){
+                return [tileNum[0]+1.000001, tileNum[1]-0.000001, 
+                         tileNum[0]+1, tileNum[1]-1];
+            }
+//Точка пересечения правой и нижней  сторон. Очень маловероятно, но исключать
+//нелься, что отрезок пройдет строго по диагнонали
+            if(Math.abs(rez[0] - tileNum[0]-1.0) < 0.000001 &&
+               Math.abs(rez[1] - tileNum[1]-1.0) < 0.000001 ){
+                return [tileNum[0]+1.000001,tileNum[1]+1.000001, 
+                        tileNum[0]+1 , tileNum[1]+1];
+            }
+            
+            return [tileNum[0]+1.000001, rez[1], tileNum[0]+1, tileNum[1]];
+        }
+
+//Проверим нижнюю сторону квадрата
+        rez = RCUtils.twoLineSegments(ls, 
+            [tileNum[0], tileNum[1]+1.0, tileNum[0]+1.0, tileNum[1]+1.0]);
+
+        if(!!rez){
+//Точка пересечения левой и нижней  сторон. Очень маловероятно, но исключать
+//нелься, что отрезок пройдет строго по диагнонали
+            if(Math.abs(rez[0] - tileNum[0]) < 0.000001 &&
+               Math.abs(rez[1] - tileNum[1]-1.0) < 0.000001 ){
+                return [tileNum[0]-0.000001, tileNum[1]+1.000001, 
+                         tileNum[0]-1, tileNum[1]+1];
+            }
+            
+//Точка пересечения правой и нижней  сторон. Очень маловероятно, но исключать
+//нелься, что отрезок пройдет строго по диагнонали
+            if(Math.abs(rez[0] - tileNum[0]-1.0) < 0.000001 &&
+               Math.abs(rez[1] - tileNum[1]-1.0) < 0.000001 ){
+                return [tileNum[0]+1.000001,tileNum[1]+1.000001, 
+                        tileNum[0]+1, tileNum[1]+1];
+            }
+            
+            return [rez[0], tileNum[1]+1.000001, tileNum[0], tileNum[1] + 1];
+        }
+    
+
+    };
+
+    
+    
+    
+    
+    
+    
+    
+    
 /*Промежуточная процедура опрделяет, пересекается ли отрезок с заданным 
  * квардратом размером 1x1 или внутри лежит, или не пересекается.
  *Возвращаемое значение: 
@@ -326,76 +592,6 @@ var temp_lineSegmentAndQuadrilateral = function (ql,
 
 
 
-/*
- * Функция тестироания перемещения обекта на предмет пересечения с границей
- * каждого тайла. В качестве параметра передаеются:
- * tileName - имя тайла, влияет на то как будет расчитываться;
- * tilePos - координаты левого верхнего угла тайла в виде массива [x,y] - 
- * это значения целые
- * firstPos -- начальная позиция положения точки в виде массива [x,y];
- * secondPos --- конечная позиция положения точки;
- *  Возвращает значение: 
- *  в виде массив:
- *  [x,y, c, s], где [x,y] --- это координаты конечной точки,
- *  c === 0, всё конечная точка, тачка должна остановиться.
- *  c === 1, машина может двигаться, но конечная точка находится в данном тайле
- *  с === 2, машина может двигаться, и конечная точка выходит за пределы тайла,
- *  в дальнейшем надо будет другой тайл рассматривать
- *  s - указывает границу: 1 - граница слева, 2 - граница вверху, 3 - граница
- *  справа, 4 - граница внизу.
- *  если пересечение в принципе не возможно возвращается значение null
- *  */
-
-    window.RCUtils.testForBorder = function(tileName, 
-                                                tilePos, 
-                                                firstPos,
-                                                secondPos){
-    
-        var tileNum = tileName.subString(0,2).toNumber();                                         
-        
-        var rez = temp_testFunctSquare(tilePos, firstPos, secondPos);
-        
-//Будем рассматривать случай с каждым тайлом
-        switch(tileNum){
-            
-            case 0: 
-            case 64:   //Это тайл, который ничем не ограничен
-                if(rez[0] && rez.length > 1 &&
-                   rez.length > 2){
-                    return [secondPos[0], secondPos[1], 
-                             2, rez[rez.length-1][2]];
-                }
-
-//Точка внутри тайла осталось, можно переходить к следующей итерации
-                return [secondPos[0], secondPos[1], 
-                             1, rez[rez.length-1][2]];
-       
-            break;    
-        
-            case 1:  //Границы слева и справа.
-            case 3:    //
-            case 4:    //
-                            //ширина границы составляет 20/128.0 от 1 
-                            //  (размера тайла)     
-                if(rez[0]) //Изнутри
-                {
-                    if(rez.length === 1){
-//проверим, куда попадает вторая точка.
-                        if (secondPos[0]<tilePos[0]+20.0/128.0){
-                            
-                        }    
-                    }
-                }    
-                
-            break;
-            
-        };
-        
-        
-        
-        
-        
-    };
 
 
 
