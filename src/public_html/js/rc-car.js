@@ -2,13 +2,67 @@
  * Автор: Матвеенко Е.А.
  * Дата: 03.02.2017
  * Модель описания движения автомобиля по трассе.
- * Описание модели автомобиля: 
- * 1) Для простоты будем пока считать, что автомобиль имеет форму 
- * прямоугольника, соответствующего размеру спрайта для организации ландшафта.
- * Отображаемый спрайт для построения ландшафта или дороги в пикселях имеет 
- * 128x128 
- * Значение размеров автомобилий несколько меньще NxM пикселей. Тогда для 
- * модели будут размеры N/128.0 x M/128.0.
+ * 1. Форма автомобиля: 
+ * 1.1 Так как и для дороги и для ландшафта спрайты  имеют размеры 128x128,
+ * принято решение взять меру величины для описания и координат расположения 
+ * автомобиля и размеры автомобиля - одну сторону спрайта дорого. Пусть размер
+ * спрайта автомобиля равен NxM пикселей, где M - длина автомобиля (от багажника
+ *  до  капота), N - ширина автомобиля, то размер в наше модели будет равен
+ * m = M/128.0 x n = N/128.0. Наших условных величин. Например, для спрайта 
+ * размером 39 x 65, тогда в наших условных единицах размер автомобиля равен
+ * m = 65 / 128 = 0.5078, n = 39 / 128 = 0.3047.
+ * 
+ * 1.2. Базовая точка автобиля. Будем обозначать эту точку pivot. Эта основная 
+ * точка движения автомобиля. Кроме того при повороте автомобиля вращение будет
+ * вокруг этой точки. Разместим ее в следующем отношении для автомобиля:
+ * 1.2.1 от задняя точка будет размещена от нее как 0.25*m, передняя точка =
+ *  0.75*m вдоль автомобиля, а поперек автомобиля она будет по середине - делить
+ * правые и левые края будет +-0.5*n от точки pivot.
+ * 
+ * 1.3. Точки определяющие форму автомобиля. Для удобства будем считать,
+ * что автомобиль имеет форму, близкую к прямоугольнику и имеет размеры
+ * m x n. Распишем все точки по отношению к pivot для автомобиля, угол поворота
+ * которого 0 градусов (смотрит слава направо).
+ * 1.3.1 Передняя часть автомобиля: сверху вниз.
+ * border[0] = {x: 0.664*m, y: -0.5*n };
+ * border[1] = {x: 0.707*m, y: -0.5*n + 0.043*m };
+ * border[2] = {x: 0.75*m,  y: -0.5*n + 0.086*m };
+ * border[3] = {x: 0.75*m,  y:  0 };
+ * border[4] = {x: 0.75*m,  y:  0.5*n - 0.086*m };
+ * border[5] = {x: 0.707*m, y:  0.5*n - 0.043*m };
+ * border[6] = {x: 0.664*m, y:  0.5*n };
+ * 
+ * 1.3.2 правая часть автомобиля которая расположена вниху 
+ * border[7]  = {x: -0.1*m,   y: 0.5*n};
+ * border[8]  = {x:  0.0*m,   y: 0.5*n};
+ * border[9]  = {x:  0.1*m,   y: 0.5*n}; 
+ * border[10] = {x:  0.2*m,   y: 0.5*n}; 
+ * border[11] = {x:  0.3*m,   y: 0.5*n}; 
+ * border[12] = {x:  0.4*m,   y: 0.5*n}; 
+ * border[13] = {x:  0.5*m,   y: 0.5*n}; 
+ * border[14] = {x:  0.6*m,   y: 0.5*n}; 
+ * 
+ * 1.3.3 задняя часть автомобиля, которая при нулевом повороте, расположена
+ * слева.
+ * border[15] = {x:  -0.164*m, y: -0.5*n };
+ * border[16] = {x:  -0.207*m, y: -0.5*n +0.043*m };
+ * border[17] = {x:   -0.25*m, y: -0.5*n +0.086*m };
+ * border[18] = {x:   -0.25*m, y: 0 };
+ * border[19] = {x:   -0.25*m, y: 0.5*n -0.086*m };    
+ * border[20] = {x:  -0.207*m, y: 0.5*n -0.043*m };
+ * border[21] = {x:  -0.164*m, y: 0.5*n };
+ * 
+ * 1.3.4 левая часть автомобиля. Находится вверху при повороте на 0 градусов
+ * border[22]  = {x: -0.1*m,   y: -0.5*n};
+ * border[23]  = {x:  0.0*m,   y: -0.5*n};
+ * border[24]  = {x:  0.1*m,   y: -0.5*n}; 
+ * border[25] =  {x:  0.2*m,   y: -0.5*n}; 
+ * border[26] =  {x:  0.3*m,   y: -0.5*n}; 
+ * border[27] =  {x:  0.4*m,   y: -0.5*n}; 
+ * border[28] =  {x:  0.5*m,   y: -0.5*n}; 
+ * border[29] =  {x:  0.6*m,   y: -0.5*n}; 
+
+ * 
  * 2) Базовая точка автомобиля: задняя точка, размещенияя в задней части 
  * спрайта автомобиля. Пусть размеры автомобиля в системе координат модели
  * l x w --- где l - длина автомобиля, w - его ширина. 
@@ -52,78 +106,247 @@
 
 (function  (){
     
+    
+    
+    
     window.RaceCar = {
         Models: {},
         View: {}
     },
     
-    RaceCar.Models.Car = Backbone.Model.extend(
-            {
-                defaults: {
-                    "pos": {
-                        "x": 0,
-                        "y": 0
-                    },                    
-                    "v": {
-                        "v": 0,
-                        "isReverse": false
-                    },
-                    "angle" : Math.PI*3.0/2.0    
+/*Вспомогательная функция для получения массива пискелей для контрольных 
+ * граничных точек. Точки строятся по следующим входным параметрам:
+ * state.x, state.y -- координаты, основной точки.
+ * state.angle --- угол поворота автомобиля в системе координат тайлов;
+ * state.m --- размер автомобиля в системе координат тайлов от  капота до 
+ * багажника;
+ * state.n --- размер автомобиля в системе координат тайлов от правой до левой
+ * сторон.
+ * */    
+    RaceCar.getCornerPixelsBySizeAndPos = function(state){
+        
+        var border = new Array(30);
+        var m = state.m;
+        var n = state.n;
+//Рассчитаем сначала точки при направлении автомобиля на 0 радиан.
+//В данном случае автомобиль направлен слева направо.
+        border[0] = {x: 0.664*m, y: -0.5*n };
+        border[1] = {x: 0.707*m, y: -0.5*n + 0.043*m };
+        border[2] = {x: 0.75*m,  y: -0.5*n + 0.086*m };
+        border[3] = {x: 0.75*m,  y:  0 };
+        border[4] = {x: 0.75*m,  y:  0.5*n - 0.086*m };
+        border[5] = {x: 0.707*m, y:  0.5*n - 0.043*m };
+        border[6] = {x: 0.664*m, y:  0.5*n };
+ 
+        border[7]  = {x: -0.1*m,   y: 0.5*n};
+        border[8]  = {x:  0.0*m,   y: 0.5*n};
+        border[9]  = {x:  0.1*m,   y: 0.5*n}; 
+        border[10] = {x:  0.2*m,   y: 0.5*n}; 
+        border[11] = {x:  0.3*m,   y: 0.5*n}; 
+        border[12] = {x:  0.4*m,   y: 0.5*n}; 
+        border[13] = {x:  0.5*m,   y: 0.5*n}; 
+        border[14] = {x:  0.6*m,   y: 0.5*n}; 
+  
+ 
+        border[15] = {x:  -0.164*m, y: -0.5*n };
+        border[16] = {x:  -0.207*m, y: -0.5*n +0.043*m };
+        border[17] = {x:   -0.25*m, y: -0.5*n +0.086*m };
+        border[18] = {x:   -0.25*m, y: 0 };
+        border[19] = {x:   -0.25*m, y: 0.5*n -0.086*m };    
+        border[20] = {x:  -0.207*m, y: 0.5*n -0.043*m };
+        border[21] = {x:  -0.164*m, y: 0.5*n };
+        
+        border[22]  = {x: -0.1*m,   y: -0.5*n};
+        border[23]  = {x:  0.0*m,   y: -0.5*n};
+        border[24]  = {x:  0.1*m,   y: -0.5*n}; 
+        border[25] =  {x:  0.2*m,   y: -0.5*n}; 
+        border[26] =  {x:  0.3*m,   y: -0.5*n}; 
+        border[27] =  {x:  0.4*m,   y: -0.5*n}; 
+        border[28] =  {x:  0.5*m,   y: -0.5*n}; 
+        border[29] =  {x:  0.6*m,   y: -0.5*n}; 
+        
+        
+        border.forEach(function (element, index, array){
+            
+            var x,y;
+           
+            x = element.x * Math.cos(state.angle) -
+                element.y * Math.sin(state.angle);
+        
+            y = element.y * Math.cos(state.angle) +
+                element.x * Math.sin(state.angle);
+        
+            element.x = x + state.x;
+            element.y = y + state.y;
+        });
+        
+        return border;
+    };
+    
+    
+    RaceCar.Models.Car =  Backbone.Model.extend(
+        {
+            defaults: {
+                "x": 0,
+                "y": 0,                    
+                "v": 0, //Если >0 движение вперед, если <0 движение назад
+                "angle" : Math.PI*3.0/2.0,
+                "m": 70/128.0,
+                "n": 39/128.0
                 },
+        
+            setNewState: function(newState){
+
+//Новое значение направление движения автомобиля                
+                var newAngle = this.get("angle");     
+
+//Новое значение скорости автомобиля                
+                var newVelocity = this.get("v");
                 
-                setNewState: function(vChange, angleChange, dTime){
-//Проверим определен ли roadMap
-                    if(!this.has("roadMap")){
-//Попробуем установить из глобальной переменной
-                        this.set({"roadMap": window.roadMap});
-                    }
+//Средняя скорость на данном этапе - равна средней предыдещей скорости и 
+//новой скорости
+                var movingVelocity = newVelocity;
+                
+//Координаты перемещения автомобиля по осям x и y (вектор движения авто)                
+                var dx = 0, dy = 0; 
+                
+//Новые значения координат x и y
+                var newX = this.get("x");
+                var newY = this.get("y");
+                
+//Значение индексов передней части авто для точек контура автомобиля. 
+//Если авто движется задом, то рассматриваются индексы от 15 до 21, 
+//включительно. Если авто движется передом, то рассматриваются индексы от 0 до 6
+//включительно
+                var i_min, i_max;
+
+                
+//Изменяемые параметры
+                var changeStatesOfCar = {};
+                
+//Были ли изменения 
+                var haveChanges = false;
+                
+//Получим координаты точек на границе
+                var pixelsOfBorder = RaceCar.getCornerPixelsBySizeAndPos(
+                        {"x": this.get("x"), "y": this.get("y"),
+                         "angle": newAngle, 
+                         "m": this.get("m"), "n": this.get("n")}
+                );
+
+//Оценим возможность поворота элемента, поступательное движение пока не 
+//рассматриваем
+                if(!!newState["rotarySpeed"] && newState["rotarySpeed"] !== 0){    
+                    var dAngle = newState["rotarySpeed"]*newState["dTime"];
                     
-                    var angle = this.get("angle");
-                    
-                    angle += angleChange*dTime;
-                    if(angle<0){
-                        angle += Math.PI*2.0;
-                    }
-                    
-                    if(angle >= Math.PI*2){
-                        angle -= Math.PI*2.0;
-                    }
-                    
-                    var v = this.get("v");
-                    var newV = v.v;
-                    var newReverse = v.isReverse;
-                    var newX, newY;
-                    
-                    if(v.isReverse){
-                        newV -=  vChange*dTime;
-                        if(newV < 0)
-                        {
-                            newReverse = false;
-                            newV = -newV;
-                        }    
-                        
-                    }else{
-                        newV +=  vChange*dTime;
-                        if(newV < 0)
-                        {
-                            newReverse = true;
-                            newV = -newV;
+                    for(var i = 0; i < pixelsOfBorder.length; i++){
+                        var rez = window.roadMap.rotatePixel(
+                            [pixelsOfBorder[i].x, pixelsOfBorder[i].y ],
+                            [this.get("x"), this.get("y")],
+                            dAngle
+                        );
+                        if(!rez[1]){
+//Было препятствие для точки
+                            if(Math.abs(dAngle) > Math.abs(rez[0]) ){
+                                dAngle = rez[0];
+                            }
                         }
                     }
+                    newAngle += dAngle;
+//Пересчитаем координаты пикселей                    
+                    pixelsOfBorder = RaceCar.getCornerPixelsBySizeAndPos(
+                        {"x": this.get("x"), "y": this.get("y"),
+                         newAngle, 
+                         "m": this.get("size").m, "n": this.get("size").n}
+                    );
+                    changeStatesOfCar["angle"] = newAngle;
+                    haveChanges = true;
+                }    
                     
-                    if(newReverse){
-                        newX = this.get("pos")["x"]-newV*Math.cos(angle);
-                        newY = this.get("pos")["y"]-newV*Math.sin(angle);
+//Проведем при необходимости перерасчет скорости.
+//Для этого
+                if(!!newState["changeVelocity"] && 
+                     newState["changeVelocity"] !== 0 ){
+                 
+                    newVelocity += newState["changeVelocity"]*newState("dTime"); 
+
+//Сделаем так, если скорость поменялась на противоположным знаком, 
+//то надо остановиться                    
+                    if(newVelocity < 0 && this.get("v") > 0 ||
+                       newVelocity > 0 && this.get("v") < 0){
+                       newVelocity = 0;
+                       changeStatesOfCar["v"] = 0;
+                       haveChanges = true;
                     }else{
-                        newX = this.get("pos")["x"]+newV*Math.cos(angle);
-                        newY = this.get("pos")["y"]+newV*Math.sin(angle);
+                       changeStatesOfCar["v"] = newVelocity;
+                       haveChanges = true;
                     }
+
+//Скорость пермещения на текущем этапе оценим как среднее между в последний раз
+// и новую с учетом ускорения.
+                    movingVelocity = (newVelocity + this.get("v"))/2.0;
+                    
+                    
+                }
+                        
+//Теперь оценим перемещение объекта
+                if(movingVelocity < - 0.000001){
+//Автомобиль движется задом.
+                    dx =  movingVelocity * Math.cos(newAngle);
+                    dy =  movingVelocity * Math.sin(newAngle);
+                    i_min = 15;
+                    i_max = 21;
+                }else if(movingVelocity > + 0.000001){
+//Автомиобиль движется передом
+                    dx =  movingVelocity * Math.cos(newAngle);
+                    dy =  movingVelocity * Math.sin(newAngle);
+                    i_min = 0;
+                    i_max = 6;
+                }
+
+//Проверим все точки автомобиля.
+                if(!!i_min){    //Автомобиль движется
+                    var continueMove = true;    //Пока нет информации, чтоэ
+                                            //авто должен остановиться
+                                            
+//Проверим все точки контура автомобиля, которые могут встретить препятствие                    
+                    for(var i = i_min; i <= i_max; i++){
                         
                     
-                }   
+                        var rez = window.roadMap.nextPixel(
+                            [pixelsOfBorder[i].x, pixelsOfBorder[i].y],
+                            [pixelsOfBorder[i].x+dx, pixelsOfBorder[i].y+dy]);
+                        if(!rez[2]){ //Было препятствие
+                            continueMove = false;
+                            if(
+                     Math.abs(rez[0] - pixelsOfBorder[i].x) < Math.abs(dx) ||
+                     Math.abs(rez[1] - pixelsOfBorder[i].y) < Math.abs(dy)){
+                                dx = rez[0]-pixelsOfBorder[i].x;
+                                dy = rez[1]-pixelsOfBorder[i].y;
+                            }
+                        }    
+                    }
+                    
+                    
+                    if(!continueMove){
+//Препятствие встретилось, скорость сбрасывается до 0                        
+                        newVelocity = 0;    
+                        changeStatesOfCar["v"] = 0;
+                    }
+//Установим новые значения координат
+                    newX += dx;
+                    newY += dy;    
+                    changeStatesOfCar["x"] = newX;
+                    changeStatesOfCar["y"] = newY;
+                    haveChanges = true;
+                }    
                 
-            }
-            
+                if(haveChanges){
+//Если были изменния надо их внести.                    
+                    this.set(changeStatesOfCar);
+                }
+            }             
+        }            
     );
     
     
