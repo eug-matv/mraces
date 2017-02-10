@@ -142,7 +142,7 @@ and open the template in the editor.
 //Создадим карту ландшафта
             var landscapeMap = new Landscape.Map(100,100);     
             var sprite1, sprite2;
-            var xc = 92.00, yc = 21.0;
+            var xc = 5.00, yc = 80.0;
             var vx = 0.0, vy=0.0, vr = 0.0;
             var rt=0;
             var keyDownArrow = keyboard(40);
@@ -209,13 +209,13 @@ and open the template in the editor.
                 vr = 0.1;
                 vx = 0.0;
                 vy = 0.0;
-            }
+            };
             
             keyQrotateLeft.release = function (){
                 vr = 0.0;
                 vx = 0.0;
                 vy = 0.0;
-            }
+            };
  
        // load resources
             PIXI.loader
