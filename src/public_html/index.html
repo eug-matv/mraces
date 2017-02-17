@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Тестовая гоночная игра MRACES</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/pixi01.css" type="text/css">
@@ -19,40 +19,75 @@ and open the template in the editor.
         <script src="js/rc-roadparts.js" type="text/javascript"></script>
         <script src="js/rc-roadmap.js" type="text/javascript"></script>
         <script src="js/rc-car.js" type="text/javascript"></script>
+        <script src="js/rc-main.js" type="text/javascript"></script>
         <script type="text/javascript">
             $(document).ready(function(){
                 
-                console.log("test1");
-                
+            //    Main.mainMenu();
+
+                window.app = new Main.App;
+                window.app.viewMainMenu();
+         
             });
+           
+        jQuery(window).resize(function() {
+            console.log('Event: resize.');
+            if(!!window.app){
+                window.app.viewMainMenu();
+            }
+        });
+            
         </script>    
     </head>
     <body>
+        
         <script>
+          
+          
+/*Загрузим текстурный атлас. */            
+            var wasGotTextureAtlas = false;
             var roadmapData = null;
             var roadMap = null;
+          
+          
+          
+//Начнем загрузку текстурного атласа
+             PIXI.loader
+                .add('maps','img/mraces.json')
+                .load(onAssetsLoaded);    
+          
+//Данные загружены. Можно исправить главную страницу            
+            function onAssetsLoaded() {
+                wasGotTextureAtlas = true;
+                
+//Принудительно пошлем сигнал об изменении размера окна
+                $(window).resize();
+            }
+                
+            
             
             $.getJSON( "json/roadmap.json", function( data ) {
                 roadmapData = data;
                 roadMap = new Roadmap.Map(roadmapData);
             });            
             
-        
-           // var rdm = new Roadmap.Map("json/roadmap1.json");
-        
-         //   alert(rdm.x_size);
-            console.log("test2");
             
-            var renderer = PIXI.autoDetectRenderer(900, 600);
-            //renderer = PIXI.
-            document.body.appendChild(renderer.view);
-
-// create the root of the scene graph
-            var stage = new PIXI.Container();
-            stage.x = 0;
-            stage.y = 0;
+            
+            
+        /*
+           var renderer = 
+         new PIXI.autoDetectRenderer(800, 600, {backgroundColor: 0x20f9bb});
+           document.body.appendChild(renderer.view);
+           var stage = new PIXI.Container();;
            
-            
+         //  Main.makeMainMenu(stage); 
+           renderer.render(stage);
+          */
+         
+         
+
+         
+         
  //Контейнер для ландшафта  
  /*
            var landscapeContainer = 
@@ -75,12 +110,12 @@ and open the template in the editor.
    
    */
    
- 
+/* 
             var landscapeContainer = new PIXI.Container();   
             var roadContainer = new PIXI.Container(); 
           
             var mapContainer = new PIXI.Container();    
-            
+ */           
         //    mapContainer.addCh
     
             //landscapeContainer.x = ;
@@ -99,7 +134,8 @@ and open the template in the editor.
                                          300   
                                         ); 
 */
-           
+
+/*
             function keyboard(keyCode) {
                 var key = {};
                 key.code = keyCode;
@@ -235,7 +271,7 @@ and open the template in the editor.
  //Создание управления клавиатурой
              //  mapContainer.filters = [blurFilter];     
         
-        
+   /*     
         
                 mapContainer.addChild(landscapeContainer);
                 mapContainer.addChild(roadContainer);
@@ -243,16 +279,26 @@ and open the template in the editor.
                 
                 stage.addChild(mapContainer);
                 requestAnimationFrame(animate); 
-            }
-                
-                
+*/
+              //  Main.makeMainMenu(stage); 
+              
+            //renderer.width = renderer.width + 100;
+            //renderer.view.width = renderer.view.width + 100;
+    /*
+            renderer.resize(renderer.width + 100, renderer.height);    
+            renderer.backgroundColor = 0x20f9bb;
 // start animating
-        //     animate();
+             animate();
 
             function animate() {
+                /*
+                   requestAnimationFrame(animate); 
+                   renderer.width = renderer.width + 1;
+                   renderer.view.width = renderer.view.width + 1;
+                  */ 
+           /// }
                 
-                
-                
+/*                
                 xc += vx;
                 yc += vy;
                 rt += vr;
@@ -313,11 +359,9 @@ and open the template in the editor.
                 mapContainer.pivot.y = mapContainer.height/2;
                 mapContainer.rotation = rt;
     */            
-                requestAnimationFrame(animate);
-               
-    // render the root container
-                renderer.render(stage);
-            }
+            //    Main.makeMainMenu(stage); 
+            
+            
         </script>    
     </body>
 </html>
