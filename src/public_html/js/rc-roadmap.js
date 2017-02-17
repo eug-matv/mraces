@@ -388,5 +388,34 @@
         return [new_a, false];
     };
 
+/*Тестирование стартовой позиции для возможности размещения там машины
+ * */
+    Roadmap.Map.prototype.testForStart = function(pnt, sizeOfCar ){
+        var i = Math.floor(pnt[0]);
+        var j = Math.floor(pnt[1]);
+        if(i < 0 || i >= this.x_size || 
+           j < 0 || j >= this.y_size){
+           return false;
+        }
+        
+        if(!this.tiles[i][j]){
+            return false;
+        }
+/*Пока эту проверку опустим        
+        if(this.tiles[i][j].tileName === "59_l_start.png"   ||
+           this.tiles[i][j].tileName === "60_r_start.png"   ||
+           this.tiles[i][j].tileName === "61_hor_start.png" ||
+           this.tiles[i][j].tileName === "62_t_start.png"   ||
+           this.tiles[i][j].tileName === "63_b_start.png"   ||
+           this.tiles[i][j].tileName === "64_vert_start.png"){
+           var dx = pnt[0] - i;
+           var dy = pnt[1] - j;
+          
+        }*/
+        return true;
+        
+    };
+
+
 }());
 
