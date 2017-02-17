@@ -194,6 +194,16 @@
                 "m": 70/128.0,
                 "n": 39/128.0
                 },
+            
+            setStartPosition: function(startPosition){
+//Надо проверить, чтобы попадала прямо на трассу        
+                if(window.roadMap.testForStart(
+                [startPosition['x'], startPosition['y']], 
+                [this.get('m'), this.get('n')]        
+                        )){
+                    set(startPosition);
+                }
+            },
         
             setNewState: function(newState){
 
@@ -257,7 +267,7 @@
                     pixelsOfBorder = RaceCar.getCornerPixelsBySizeAndPos(
                         {"x": this.get("x"), "y": this.get("y"),
                          newAngle, 
-                         "m": this.get("size").m, "n": this.get("size").n}
+                         "m": this.get("m"), "n": this.get("n")}
                     );
                     changeStatesOfCar["angle"] = newAngle;
                     haveChanges = true;
@@ -348,6 +358,17 @@
             }             
         }            
     );
+    
+
+/*Создадим модель для нашего автомобиля. Пуская элемент модели будет созданный
+ * PIXI элемент
+ */
+    RaceCar.View.Car =  Backbone.View.extend({
+                
+                
+        }
+    );    
+    
     
     
 }());                                                                                                                                                                                                                                                                                                                           
