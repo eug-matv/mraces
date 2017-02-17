@@ -465,6 +465,23 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">tiles/buttons/pause.png</key>
+            <key type="filename">tiles/buttons/play.png</key>
+            <key type="filename">tiles/buttons/statistics.png</key>
+            <key type="filename">tiles/buttons/stop.png</key>
+            <key type="filename">tiles/buttons/tool.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>20,20,40,40</rect>
+                <key>scale9Paddings</key>
+                <rect>20,20,40,40</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
         </map>
         <key>fileList</key>
         <array>
@@ -628,6 +645,11 @@
             <filename>tiles/Grass/land_grass12.png</filename>
             <filename>tiles/Grass/land_grass13.png</filename>
             <filename>tiles/Grass/land_grass14.png</filename>
+            <filename>tiles/buttons/pause.png</filename>
+            <filename>tiles/buttons/play.png</filename>
+            <filename>tiles/buttons/stop.png</filename>
+            <filename>tiles/buttons/tool.png</filename>
+            <filename>tiles/buttons/statistics.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
