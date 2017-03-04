@@ -1,8 +1,8 @@
 {
-    "name": "pixi01",
-    "version": "1.0.0",
+    "name": "mraces",
+    "version": "0.0.1",
     "keywords": ["util", "functional", "server", "client", "browser"],
-    "author": "starik",
+    "author": "Evgeny Matveenko",
     "contributors": [],
     "dependencies": {}
 }
