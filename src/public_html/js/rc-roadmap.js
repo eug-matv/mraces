@@ -64,11 +64,8 @@
                                 " под номером " + i_p.toString());
                     }    
                 }
-            }
-            
-        }
-
-        
+            }   
+        }     
     };
     
 /*Отображение данных*/    
@@ -416,6 +413,45 @@
         
     };
 
+/*Рисование карты автомобильной трассы. 
+ *Метод: drawRoadMap.
+ *Параметры: 
+ *szMap - массив в виде [w, h], где w - ширина отображаемое области,
+ *h - высота области отображения схемы.
+ * 
+ * Возвращает объект типа: PIXI.Graphics(), 
+ * который затем можно добавить к объекту типа 
+ * PIX.Container.
+ **/                                                         
+    Roadmap.Map.prototype.drawRoadMap = function(szMap){
+        
+        var graphics = new window.PIXI.Graphics();
+        var xCoef, yCoef;
+//Нарисуем квадрат
+        graphics.lineStyle(4, 0xFF0000, 0.8);
+        graphics.beginFill(0x774411, 0.8);
+        graphics.drawRect(0, 0, szMap[0], szMap[1]);
+        graphics.endFill();
+        xCoef = szMap[0] / this.x_size;
+        yCoef = szMap[1] / this.y_size;
+        
+        graphics.beginFill(0x5555FF, 1.0);
+        graphics.lineStyle(1, 0x5555FF, 1.0);
+        for (var k = 0; k < this.roadMap.map.roadparts.length; k++){
+            var i_p = this.roadMap.map.roadparts[k].i;
+            var x_p = this.roadMap.map.roadparts[k].x;
+            var y_p = this.roadMap.map.roadparts[k].y;
+            var w = Roadparts.roadParts[i_p].tileNames[0].length;
+            var h = Roadparts.roadParts[i_p].tileNames.length;
+            x_p = x_p * xCoef;    
+            y_p = y_p * yCoef;
+            w = w * xCoef;
+            h = h * yCoef;
+            graphics.drawRect(x_p, y_p, w, h);
+        }
+        graphics.endFill();
+        return graphics;
+    };
 
 }());
 
