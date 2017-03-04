@@ -465,6 +465,8 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">tiles/buttons/cancel.png</key>
+            <key type="filename">tiles/buttons/ok.png</key>
             <key type="filename">tiles/buttons/pause.png</key>
             <key type="filename">tiles/buttons/play.png</key>
             <key type="filename">tiles/buttons/statistics.png</key>
@@ -650,6 +652,8 @@
             <filename>tiles/buttons/stop.png</filename>
             <filename>tiles/buttons/tool.png</filename>
             <filename>tiles/buttons/statistics.png</filename>
+            <filename>tiles/buttons/cancel.png</filename>
+            <filename>tiles/buttons/ok.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
